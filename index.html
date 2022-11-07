@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,700;1,400&display=swap"
+        rel="stylesheet">
+    <script>
+        /* declerations of element variables  */
+        var userName;
+        var password;
+        var studentId;
+        var semester;
+        var year;
+        var textBox;
+        var btn;
+
+        function checkUserName() {
+            var input = userName.value.trim();
+            var validFlag;
+            /* checks for empty string */
+            if (input === "") {
+                console.log("nothing in the username field");
+                userName.removeAttribute("class");
+                return
+            }
+            /* check for invalid characters  */
+            for (var i = 0; i < input.length; i++) {
+                /* if the given character isn't lowercase or a " " */
+                if ((input.charAt(i) < 'a' || input.charAt(i) > 'z') && input.charAt(i) !== "") {
+                    console.log("invalid character: " + input.charAt(i));
+                    validFlag = false;
+                    break;
+                }
+                else {
+                    validFlag = true;
+                }
+            }
+
+            validFlag ? userName.setAttribute("class", "valid") : userName.setAttribute("class", "alert")
+        }
+
+        function checkPassword() {
+            // flags used to 
+            var specialCharFlag = false;
+            var upperCharFlag = false;
+            var lowerCharFlag = false;
+            var numFlag = false;
+
+            var input = password.value;
+
+
+            /*
+            -iterate through the input string  
+            -check for a lowecase char, uppercase char,
+            special char, and number
+            -set appropriate flags
+            */
+            for (var i = 0; i < input.length; i++) {
+                if (input.charAt(i) >= 'a' && input.charAt(i) <= 'z') {
+                    lowerCharFlag = true;
+                }
+                if (input.charAt(i) >= 'A' && input.charAt(i) <= 'Z') {
+                    upperCharFlag = true;
+                }
+                if ((input.charAt(i) >= '!' && input.charAt(i) <= '/')
+                    || (input.charAt(i) >= ':' && input.charAt(i) <= '@')) {
+                    specialCharFlag = true;
+                }
+                if (input.charAt(i) >= '0' && input.charAt(i) <= '9') {
+                    numFlag = true;
+                }
+            }
+
+            /* check if any of the requirements are missing */
+            if (specialCharFlag == false ||
+                upperCharFlag == false ||
+                lowerCharFlag == false ||
+                numFlag == false) {
+                /* specialized check for if the password field is left empty */
+                if (input === "") {
+                    // console.log("nothing in the password field");
+                    password.removeAttribute("class");
+                    return
+                }
+                password.setAttribute("class", "alert");
+            }
+            else {
+                password.setAttribute("class", "valid")
+            }
+
+            console.log("password input: " + input);
+            console.log("special char flag: " + specialCharFlag);
+            console.log("upper case flag: " + upperCharFlag);
+            console.log("lower char flag: " + lowerCharFlag);
+            console.log("num flag: " + numFlag);
+        }
+
+        function checkStudentId() {
+            nonNumFlag = false
+            var input = studentId.value;
+
+            if (input === '') {
+                studentId.removeAttribute("class")
+                return
+            }
+
+            if (input.length != 9) {
+                studentId.setAttribute("class", "alert")
+                return;
+            }
+
+            for (let i = 0; i < input.length; i++) {
+                /* if there's an invalid character flag it */
+                if (input.charAt(i) < '0' || input.charAt(i) > '9') {
+                    nonNumFlag = true;
+                }
+            }
+
+            if (nonNumFlag === true) {
+                studentId.setAttribute("class", "alert")
+            }
+            else {
+                studentId.setAttribute("class", "valid")
+
+            }
+
+        }
+        function checkSemester() {
+            var input = semester.value
+            semester.value = input.toUpperCase();
+            input = semester.value;
+            console.log("semester field: "+input);
+        }
+
+        function checkYear() {
+            var input = year.value
+            console.log("year field: "+input);
+            console.log(typeof(input));
+            input = parseInt(input, 10)
+            console.log("input after parse: " + input);
+            console.log(typeof(input));
+        }
+        function init() {
+            console.log("hello world");
+            userName = document.getElementById("UserName");
+            password = document.getElementById("password");
+            studentId = document.getElementById("student-id");
+            semester = document.getElementById("semester");
+            year = document.getElementById("year");
+            btn = document.getElementById("submit-btn");
+            textBox = document.getElementById("text-box")
+
+            btn.addEventListener("click", () => { console.log("you clicked me"); console.log(typeof (btn)); });
+            userName.addEventListener("blur", checkUserName);
+            password.addEventListener("blur", checkPassword);
+            studentId.addEventListener("blur", checkStudentId);
+            semester.addEventListener("blur", checkSemester);
+            year.addEventListener("blur", checkYear);
+
+        }
+
+
+        window.addEventListener("load", init);
+    </script>
+
+    <Style>
+        body {
+            background-color: #2c3e50;
+            font-family: 'Lato', sans-serif;
+        }
+
+        .container {
+            background-color: #fff;
+            margin: auto 39%;
+            height: fit-content;
+            width: fit-content;
+            padding: 4em;
+            border-radius: .66rem;
+            margin-bottom: 3em;
+        }
+
+        label {
+            display: block;
+            display: none;
+        }
+
+        .form-element {
+            margin: 3em;
+            /* border: 2px solid red; */
+        }
+
+        input {
+            height: 2.25rem;
+            font-size: 1.25rem;
+            border: none;
+            border-bottom: 2px solid #2c3e50;
+            font-weight: 100;
+            box-sizing: border-box;
+        }
+
+        input:focus {
+            outline: none;
+            /* box-shadow: 0px, 10px 5px lightblue; */
+            border-bottom: 4px solid #8eadcd;
+        }
+
+        input.alert {
+            border-bottom: 2px solid red;
+        }
+
+        input.valid {
+            border-bottom: 2px solid rgb(46, 221, 46);
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        h1 {
+            color: #fff;
+            font-weight: 700;
+            font-size: 4.25rem;
+            margin-bottom: 5px;
+        }
+
+        #subtitle {
+            color: #fff;
+            text-align: center;
+            font-style: italic;
+            margin-bottom: 3em;
+            font-size: 1.25rem;
+        }
+
+        h2 {
+            font-size: 2.25rem;
+            color: #2c3e50;
+        }
+
+        button {
+            margin: 0 auto;
+            padding: 1.25rem 2.50rem;
+            border-radius: 3.25rem;
+            background: #2c3e50;
+            color: #fff;
+            border: none;
+            font-size: 1.25rem;
+        }
+
+        button:hover {
+            border: 4px solid #8eadcd;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .semester-input {
+            display: inline;
+            width: 50%;
+        }
+
+        .semester-container {
+            display: flex;
+            /* border: 2px solid red; */
+        }
+
+        textarea {
+            font-style: inherit;
+            width: 100%;
+            height: 7em;
+            box-sizing: border-box;
+            font-size: 1.10rem;
+        }
+
+        textarea:focus {
+            outline: 2px solid #8eadcd;
+        }
+    </Style>
+
+    <title>Lab2</title>
+</head>
+
+<body>
+    <h1 class="center">Fake Business</h1>
+    <p id="subtitle"> Because all business is fake business until finalized - Tim Dillon</p>
+    <div class="container">
+        <h2 class="center">Sign Up</h2>
+        <form action="Get" id="main-form">
+            <div class="form-element">
+                <label for="UserName">Username</label>
+                <input type="text" autocomplete="name" name="uname" id="UserName" placeholder="User Name">
+            </div>
+            <div class="form-element">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" placeholder="Password">
+            </div>
+            <div class="form-element">
+                <label for="student-id">Student ID</label>
+                <input type="text" id="student-id" placeholder="Student Id">
+            </div>
+            <div class="form-element">
+                <div class="semester-container">
+                    <label for="semester">semester</label>
+                    <input type="text" id="semester" class="semester-input" placeholder="Semester">
+                    <label for="year">year</label>
+                    <input type="text" id="year" class="semester-input" placeholder="Year">
+                </div>
+            </div>
+            <div class="form-element">
+                <label for="text-box">message</label>
+                <textarea name="message" id="text-box" placeholder="write to us"></textarea>
+            </div>
+        </form>
+        <div class="btn-container">
+            <button type="button" id="submit-btn">Submit</button>
+        </div>
+    </div>
+</body>
+
+</html>
